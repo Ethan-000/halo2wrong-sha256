@@ -6,3 +6,9 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# halo2_proofs = { version = "0.3.0", default-features = false }
+halo2wrong = { git = "https://github.com/privacy-scaling-explorations/halo2wrong", package = "halo2wrong", tag = "v2023_04_20"}
+rand = "0.8"
+
+[dev-dependencies]
+criterion = "0.3"
