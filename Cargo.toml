@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 # halo2_proofs = { version = "0.3.0", default-features = false }
 halo2wrong = { git = "https://github.com/privacy-scaling-explorations/halo2wrong", package = "halo2wrong", tag = "v2023_04_20", features = ["circuit-params"] }
+# halo2_backend = { git = "https://github.com/Ethan-000/halo2_backend"}
 rand = "0.8"
 
 [dev-dependencies]
