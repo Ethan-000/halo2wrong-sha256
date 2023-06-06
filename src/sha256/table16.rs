@@ -360,7 +360,7 @@ impl Sha256Instructions<Fr> for Table16Chip {
         &self,
         layouter: &mut impl Layouter<Fr>,
         state: &Self::State,
-    ) -> Result<[Self::BlockWord; super::DIGEST_SIZE], Error> {
+    ) -> Result<Vec<Value<Fr>>, Error> {
         // Copy the dense forms of the state variable chunks down to this gate.
         // Reconstruct the 32-bit dense words.
         self.config().compression.digest(layouter, state.clone())

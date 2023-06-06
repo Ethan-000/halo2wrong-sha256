@@ -1,4 +1,4 @@
-use super::super::{super::DIGEST_SIZE, BlockWord, RoundWordDense};
+use super::super::{RoundWordDense};
 use super::{compression_util::*, CompressionConfig, State};
 use halo2wrong::curves::bn256::Fr;
 use halo2wrong::halo2::{
@@ -12,7 +12,7 @@ impl CompressionConfig {
         &self,
         region: &mut Region<'_, Fr>,
         state: State,
-    ) -> Result<[BlockWord; DIGEST_SIZE], Error> {
+    ) -> Result<Vec<Value<Fr>>, Error> {
         let a_3 = self.extras[0];
         let a_4 = self.extras[1];
         let a_5 = self.message_schedule;
@@ -56,15 +56,16 @@ impl CompressionConfig {
         let h = self.assign_digest_word(region, efgh_row + 1, a_6, a_7, a_8, h)?;
 
         Ok([
-            BlockWord(a),
-            BlockWord(b),
-            BlockWord(c),
-            BlockWord(d),
-            BlockWord(e),
-            BlockWord(f),
-            BlockWord(g),
-            BlockWord(h),
-        ])
+            a.map(|x| Fr::from(x as u64)),
+            b.map(|x| Fr::from(x as u64)),
+            c.map(|x| Fr::from(x as u64)),
+            d.map(|x| Fr::from(x as u64)),
+            e.map(|x| Fr::from(x as u64)),
+            f.map(|x| Fr::from(x as u64)),
+            g.map(|x| Fr::from(x as u64)),
+            h.map(|x| Fr::from(x as u64)),
+        ]
+        .to_vec())
     }
 
     fn assign_digest_word(
