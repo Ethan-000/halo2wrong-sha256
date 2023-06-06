@@ -8,7 +8,7 @@ use std::fmt;
 
 use halo2wrong::halo2::{
     arithmetic::Field,
-    circuit::{Chip, Layouter},
+    circuit::{AssignedCell, Chip, Layouter},
     plonk::Error,
 };
 
@@ -53,7 +53,7 @@ pub trait Sha256Instructions<F: Field>: Chip<F> {
         &self,
         layouter: &mut impl Layouter<F>,
         state: &Self::State,
-    ) -> Result<[Self::BlockWord; DIGEST_SIZE], Error>;
+    ) -> Result<Vec<AssignedCell<F, F>>, Error>;
 }
 
 /// The output of a SHA-256 circuit invocation.
@@ -133,7 +133,7 @@ impl<F: Field, Sha256Chip: Sha256Instructions<F>> Sha256<F, Sha256Chip> {
     pub fn finalize(
         mut self,
         mut layouter: impl Layouter<F>,
-    ) -> Result<Sha256Digest<Sha256Chip::BlockWord>, Error> {
+    ) -> Result<Vec<AssignedCell<F, F>>, Error> {
         // Pad the remaining block
         if !self.cur_block.is_empty() {
             let padding = vec![Sha256Chip::BlockWord::default(); BLOCK_SIZE - self.cur_block.len()];
@@ -147,9 +147,7 @@ impl<F: Field, Sha256Chip: Sha256Instructions<F>> Sha256<F, Sha256Chip> {
                     .expect("cur_block.len() == BLOCK_SIZE"),
             )?;
         }
-        self.chip
-            .digest(&mut layouter, &self.state)
-            .map(Sha256Digest)
+        self.chip.digest(&mut layouter, &self.state)
     }
 
     /// Convenience function to compute hash of the data. It will handle hasher creation,
@@ -158,7 +156,7 @@ impl<F: Field, Sha256Chip: Sha256Instructions<F>> Sha256<F, Sha256Chip> {
         chip: Sha256Chip,
         mut layouter: impl Layouter<F>,
         data: &[Sha256Chip::BlockWord],
-    ) -> Result<Sha256Digest<Sha256Chip::BlockWord>, Error> {
+    ) -> Result<Vec<AssignedCell<F, F>>, Error> {
         let mut hasher = Self::new(chip, layouter.namespace(|| "init"))?;
         hasher.update(layouter.namespace(|| "update"), data)?;
         hasher.finalize(layouter.namespace(|| "finalize"))
