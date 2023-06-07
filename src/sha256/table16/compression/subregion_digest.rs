@@ -1,4 +1,4 @@
-use super::super::{RoundWordDense};
+use super::super::RoundWordDense;
 use super::{compression_util::*, CompressionConfig, State};
 use halo2wrong::curves::bn256::Fr;
 use halo2wrong::halo2::{
