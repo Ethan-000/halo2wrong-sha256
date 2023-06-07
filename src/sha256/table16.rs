@@ -52,6 +52,8 @@ const IV: [u32; STATE] = [
 /// A word in a `Table16` message block.
 // TODO: Make the internals of this struct private.
 pub struct BlockWord(pub Value<u32>);
+#[derive(Clone, Copy, Debug, Default)]
+pub struct BlockWordNew(pub Value<u8>);
 
 #[derive(Clone, Debug)]
 /// Little-endian bits (up to 64 bits)
@@ -325,7 +327,7 @@ impl Table16Chip {
 
 impl Sha256Instructions<Fr> for Table16Chip {
     type State = State;
-    type BlockWord = BlockWord;
+    type BlockWord = BlockWordNew;
 
     fn initialization_vector(&self, layouter: &mut impl Layouter<Fr>) -> Result<State, Error> {
         self.config().compression.initialize_with_iv(layouter, IV)

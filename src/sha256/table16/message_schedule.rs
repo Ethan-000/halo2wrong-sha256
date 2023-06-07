@@ -1,6 +1,9 @@
 use std::convert::TryInto;
 
-use super::{super::BLOCK_SIZE, AssignedBits, BlockWord, SpreadInputs, Table16Assignment, ROUNDS};
+use super::{
+    super::BLOCK_SIZE, AssignedBits, BlockWord, BlockWordNew, SpreadInputs, Table16Assignment,
+    ROUNDS,
+};
 use halo2wrong::{
     curves::bn256::Fr,
     halo2::{
@@ -307,7 +310,7 @@ impl MessageScheduleConfig {
     pub(super) fn process(
         &self,
         layouter: &mut impl Layouter<Fr>,
-        input: [BlockWord; BLOCK_SIZE],
+        input: [BlockWordNew; BLOCK_SIZE],
     ) -> Result<
         (
             [MessageWord; ROUNDS],
@@ -317,6 +320,20 @@ impl MessageScheduleConfig {
     > {
         let mut w = Vec::<MessageWord>::with_capacity(ROUNDS);
         let mut w_halves = Vec::<(AssignedBits<16>, AssignedBits<16>)>::with_capacity(ROUNDS);
+
+        let input: Vec<BlockWord> = input
+            .chunks(4)
+            .map(|word| {
+                BlockWord(
+                    word[0]
+                        .0
+                        .zip(word[1].0)
+                        .zip(word[2].0)
+                        .zip(word[3].0)
+                        .map(|(((a, b), c), d)| u32::from_be_bytes([a, b, c, d])),
+                )
+            })
+            .collect();
 
         layouter.assign_region(
             || "process message block",
@@ -396,7 +413,7 @@ impl MessageScheduleConfig {
 #[cfg(test)]
 mod tests {
     use super::super::{
-        super::BLOCK_SIZE, util::lebs2ip, BlockWord, SpreadTableChip, Table16Chip, Table16Config,
+        super::BLOCK_SIZE, util::lebs2ip, BlockWordNew, SpreadTableChip, Table16Chip, Table16Config,
     };
     use super::schedule_util::*;
     use halo2wrong::curves::bn256::Fr;
@@ -433,7 +450,7 @@ mod tests {
 
                 // Provide input
                 // Test vector: "abc"
-                let inputs: [BlockWord; BLOCK_SIZE] = msg_schedule_test_input();
+                let inputs: [BlockWordNew; BLOCK_SIZE] = msg_schedule_test_input();
 
                 // Run message_scheduler to get W_[0..64]
                 let (w, _) = config.message_schedule.process(&mut layouter, inputs)?;
