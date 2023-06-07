@@ -80,6 +80,8 @@ impl MessageScheduleConfig {
         region: &mut Region<'_, Fr>,
         input: &[BlockWord],
     ) -> Result<Vec<(AssignedBits<16>, AssignedBits<16>)>, Error> {
+
+        
         assert_eq!(input.len(), SUBREGION_1_LEN);
         Ok(input
             .iter()

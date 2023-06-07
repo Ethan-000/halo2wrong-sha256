@@ -14,12 +14,12 @@ use halo2wrong::halo2::{
 
 mod table16;
 
-pub use table16::{BlockWord, Table16Chip, Table16Config};
+pub use table16::{BlockWordNew, Table16Chip, Table16Config};
 
-/// The size of a SHA-256 block, in 32-bit words.
-pub const BLOCK_SIZE: usize = 16;
-/// The size of a SHA-256 digest, in 32-bit words.
-const DIGEST_SIZE: usize = 8;
+/// The size of a SHA-256 block, in 8-bit words.
+pub const BLOCK_SIZE: usize = 64;
+/// The size of a SHA-256 digest, in 8-bit words.
+const DIGEST_SIZE: usize = 32;
 
 /// The set of circuit instructions required to use the [`Sha256`] gadget.
 pub trait Sha256Instructions<F: Field>: Chip<F> {

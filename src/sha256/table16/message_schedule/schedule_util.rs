@@ -9,7 +9,7 @@ use halo2wrong::{
 };
 
 #[cfg(test)]
-use super::super::{super::BLOCK_SIZE, BlockWord, ROUNDS};
+use super::super::{super::BLOCK_SIZE, BlockWordNew, ROUNDS};
 
 // Rows needed for each gate
 pub const DECOMPOSE_0_ROWS: usize = 2;
@@ -58,24 +58,72 @@ pub fn get_word_row(word_idx: usize) -> usize {
 
 /// Test vector: "abc"
 #[cfg(test)]
-pub fn msg_schedule_test_input() -> [BlockWord; BLOCK_SIZE] {
+pub fn msg_schedule_test_input() -> [BlockWordNew; BLOCK_SIZE] {
     [
-        BlockWord(Value::known(0b01100001011000100110001110000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000000000)),
-        BlockWord(Value::known(0b00000000000000000000000000011000)),
+        BlockWordNew(Value::known(0b01100001)),
+        BlockWordNew(Value::known(0b01100010)),
+        BlockWordNew(Value::known(0b01100011)),
+        BlockWordNew(Value::known(0b10000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00000000)),
+        BlockWordNew(Value::known(0b00011000)),
     ]
 }
 
