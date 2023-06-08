@@ -209,17 +209,10 @@ impl MessageScheduleConfig {
 
         let row = get_word_row(word_idx);
 
-        // println!("{:?}", word_idx);
-        // println!("{:?}", word);
-        // println!("{:?}", a_3);
-        // println!("{:?}", row);
-
         let w_lo = {
             let w_lo_val = word.map(|word| word as u16);
             AssignedBits::<16>::assign(region, || format!("W_{}_lo", word_idx), a_3, row, w_lo_val)?
         };
-
-        // println!("{:?}", word_idx);
 
         let w_hi = {
             let w_hi_val = word.map(|word| (word >> 16) as u16);
