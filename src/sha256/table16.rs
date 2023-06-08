@@ -1,7 +1,7 @@
 use std::convert::TryInto;
 use std::marker::PhantomData;
 
-use super::Sha256Instructions;
+use super::{FirstElementOfPad, Sha256Instructions};
 use halo2wrong::{
     curves::bn256::Fr,
     halo2::{
@@ -52,8 +52,20 @@ const IV: [u32; STATE] = [
 /// A word in a `Table16` message block.
 // TODO: Make the internals of this struct private.
 pub struct BlockWord(pub Value<u32>);
-#[derive(Clone, Copy, Debug, Default)]
+#[derive(Clone, Copy, Debug)]
 pub struct BlockWordNew(pub Value<u8>);
+
+impl Default for BlockWordNew {
+    fn default() -> Self {
+        BlockWordNew(Value::known(0))
+    }
+}
+
+impl FirstElementOfPad for BlockWordNew {
+    fn first_element_of_pad() -> Self {
+        BlockWordNew(Value::known(0x80))
+    }
+}
 
 #[derive(Clone, Debug)]
 /// Little-endian bits (up to 64 bits)

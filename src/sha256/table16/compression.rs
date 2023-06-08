@@ -909,11 +909,14 @@ impl CompressionConfig {
             |mut region| {
                 state = initialized_state.clone();
                 for (idx, w_halves) in w_halves.iter().enumerate() {
+                    // println!("{:?}", idx);
                     state = self.assign_round(&mut region, idx.into(), state.clone(), w_halves)?;
+                    // println!("{:?}", idx);
                 }
                 Ok(())
             },
         )?;
+        // println!("here");
         Ok(state)
     }
 

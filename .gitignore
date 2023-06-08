@@ -5,3 +5,6 @@ examples/9
 .vscode
 node_modules
 pkg/
+
+main.rs
+/benches/sha256_assets

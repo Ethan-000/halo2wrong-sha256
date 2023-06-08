@@ -16,6 +16,10 @@ mod table16;
 
 pub use table16::{BlockWordNew, Table16Chip, Table16Config};
 
+pub trait FirstElementOfPad {
+    fn first_element_of_pad() -> Self;
+}
+
 /// The size of a SHA-256 block, in 8-bit words.
 pub const BLOCK_SIZE: usize = 64;
 /// The size of a SHA-256 digest, in 8-bit words.
@@ -27,7 +31,7 @@ pub trait Sha256Instructions<F: Field>: Chip<F> {
     type State: Clone + fmt::Debug;
     /// Variable representing a 32-bit word of the input block to the SHA-256 compression
     /// function.
-    type BlockWord: Copy + fmt::Debug + Default;
+    type BlockWord: Copy + fmt::Debug + Default + FirstElementOfPad;
 
     /// Places the SHA-256 IV in the circuit, returning the initial state variable.
     fn initialization_vector(&self, layouter: &mut impl Layouter<F>) -> Result<Self::State, Error>;
@@ -133,7 +137,10 @@ impl<F: Field, Sha256Chip: Sha256Instructions<F>> Sha256<F, Sha256Chip> {
     pub fn finalize(mut self, mut layouter: impl Layouter<F>) -> Result<Vec<Value<F>>, Error> {
         // Pad the remaining block
         if !self.cur_block.is_empty() {
-            let padding = vec![Sha256Chip::BlockWord::default(); BLOCK_SIZE - self.cur_block.len()];
+            // let padding = vec![Sha256Chip::BlockWord::default(); BLOCK_SIZE - self.cur_block.len()];
+            let mut padding =
+                vec![Sha256Chip::BlockWord::default(); BLOCK_SIZE - self.cur_block.len()];
+            padding[0] = Sha256Chip::BlockWord::first_element_of_pad();
             self.cur_block.extend_from_slice(&padding);
             self.state = self.chip.initialization(&mut layouter, &self.state)?;
             self.state = self.chip.compress(
